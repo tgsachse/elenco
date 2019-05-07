@@ -13,13 +13,13 @@ public class Deque<E> {
 
     // Insert an element at an index in the deque.
     public fun insert(element: E, index: Int) {
-        val newNode = DequeNode<E>(element, null, null)
-
-        // Throw an exception if the desired index is out of bounds.
         if (index < 0 || index > size) {
-            val message = "The index '${index}' is out of the deque's bounds!"
-            throw IndexOutOfBoundsException(message)
+            throw IndexOutOfBoundsException(
+                "The given index '${index}' is out of the deque's bounds!"
+            )
         }
+
+        val newNode = DequeNode<E>(element, null, null)
 
         // If the deque is empty, point both the head and tail at the new node.
         if (headNode == null || tailNode == null) {
@@ -67,8 +67,8 @@ public class Deque<E> {
                 precedingIndex = 0
                 precedingNode = headNode!!
                 while (precedingIndex < (index - 1)) {
-                    precedingIndex++
                     precedingNode = precedingNode.nextNode!!
+                    precedingIndex++
                 }
             }
 
@@ -99,6 +99,36 @@ public class Deque<E> {
     // Push an element onto the top (front) of the deque.
     public fun push(element: E) {
         prepend(element)
+    }
+
+    public fun retrieve(index: Int): E {
+        if (index < 0 || index >= size) {
+            throw IndexOutOfBoundsException(
+                "The given index '${index}' is out of the deque's bounds!"
+            )
+        }
+
+        var currentIndex: Int
+        var currentNode: DequeNode<E>
+        if (index > (size / 2)) {
+            currentIndex = size - 1
+            currentNode = tailNode!!
+            while (currentIndex > index) {
+                currentNode = currentNode.previousNode!!
+                currentIndex--
+            }
+        }
+
+        else {
+            currentIndex = 0
+            currentNode = headNode!!
+            while (currentIndex < index) {
+                currentNode = currentNode.nextNode!!
+                currentIndex++
+            }
+        }
+
+        return currentNode.element
     }
 
     // temp
