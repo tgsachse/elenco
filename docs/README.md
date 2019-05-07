@@ -1,2 +1,2 @@
 # elenco
-A linked list implemented in Kotlin
+A deque implemented in Kotlin
