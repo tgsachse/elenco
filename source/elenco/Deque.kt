@@ -11,45 +11,46 @@ public class Deque<E> {
     private var headNode: DequeNode<E>? = null
     private var tailNode: DequeNode<E>? = null
 
-    /*
-    private fun getLastNode(): DequeNode<E>? {
-        if (headNode == null) {
-            return null
-        }
-
-        var currentNode = headNode
-        while (currentNode?.nextNode != null) {
-            currentNode = currentNode.nextNode
-        }
-
-        return currentNode
-    }*/
-
+    // Insert an element at an index in the deque.
     public fun insert(element: E, index: Int) {
         val newNode = DequeNode<E>(element, null, null)
 
+        // Throw an exception if the desired index is out of bounds.
         if (index < 0 || index > size) {
             val message = "The index '${index}' is out of the deque's bounds!"
             throw IndexOutOfBoundsException(message)
         }
 
+        // If the deque is empty, point both the head and tail at the new node.
         if (headNode == null || tailNode == null) {
             headNode = newNode
             tailNode = newNode
         }
+
+        // If the index is 0, prepend the new node to the front of the deque.
         else if (index == 0) {
             newNode.nextNode = headNode
             headNode!!.previousNode = newNode
             headNode = newNode
         }
+
+        // If the index is the size of the deque, append the new node to the
+        // back of the deque.
         else if (index == size) {
             newNode.previousNode = tailNode
             tailNode!!.nextNode = newNode
             tailNode = newNode
         }
+
+        // Otherwise, find the node that precedes the desired index and insert
+        // after that node.
         else {
             var precedingIndex: Int
             var precedingNode: DequeNode<E>
+
+            // Start the preceding node at the back of the deque if the desired
+            // index is in the back half. Recalculate the preceding node until
+            // the preceding node is positioned right before the desired index.
             if (index > (size / 2)) {
                 precedingIndex = size - 2
                 precedingNode = tailNode!!.previousNode!!
@@ -58,6 +59,10 @@ public class Deque<E> {
                     precedingIndex--
                 }
             }
+
+            // Otherwise, start the preceding node at the front of the deque.
+            // Recalculate the preceding node until the preceding node is
+            // positioned right before the desired index.
             else {
                 precedingIndex = 0
                 precedingNode = headNode!!
@@ -67,6 +72,7 @@ public class Deque<E> {
                 }
             }
 
+            // Insert the new node into the deque after the preceding node.
             newNode.previousNode = precedingNode
             newNode.nextNode = precedingNode.nextNode
             newNode.nextNode!!.previousNode = newNode
@@ -75,6 +81,27 @@ public class Deque<E> {
         size++
     }
 
+    // Prepend an element to the front of the deque.
+    public fun prepend(element: E) {
+        insert(element, 0)
+    }
+
+    // Append an element to the back of the deque.
+    public fun append(element: E) {
+        insert(element, size)
+    }
+
+    // Enqueue an element at the back of the deque.
+    public fun enqueue(element: E) {
+        append(element)
+    }
+
+    // Push an element onto the top (front) of the deque.
+    public fun push(element: E) {
+        prepend(element)
+    }
+
+    // temp
     public fun print() {
         var currentNode = headNode
         while (currentNode != null) {
@@ -82,25 +109,4 @@ public class Deque<E> {
             currentNode = currentNode.nextNode
         }
     }
-
-    /*
-    public fun enqueue(element: E) {
-        append(E)
-    }
-
-    public fun append(element: E) {
-        val newNode = DequeNode<E>(element, null)
-        if (headNode == null) {
-            headNode = newNode
-        }
-        else {
-            val lastNode = getLastNode()
-            lastNode!!.nextNode = newNode
-        }
-    }
-
-    public fun prepend(element: E) {
-        val newNode = DequeNode<E>(element, headNode)
-        headNode = newNode
-    }*/
 }
