@@ -1,2 +1,2 @@
 # elenco
-A deque implemented in Kotlin
+A deque implemented in Kotlin.
